@@ -6,19 +6,36 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.ArrayList;
+
+import io.github.some_example_name.ContactManager;
 import io.github.some_example_name.GameResources;
+import io.github.some_example_name.GameSession;
 import io.github.some_example_name.GameSettings;
 import io.github.some_example_name.MyGdxGame;
+import io.github.some_example_name.Objects.BulletObject;
 import io.github.some_example_name.Objects.ShipObject;
+import io.github.some_example_name.Objects.TrashObject;
 
 public class GameScreen extends ScreenAdapter {
 
     MyGdxGame myGdxGame;
+    GameSession gameSession;
     ShipObject shipObject;
 
+    ArrayList<TrashObject> trashArray;
+    ArrayList<BulletObject> bulletArray;
+
+    ContactManager contactManager;
 
     public GameScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
+        gameSession = new GameSession();
+
+        contactManager = new ContactManager(myGdxGame.world);
+
+        trashArray = new ArrayList<>();
+        bulletArray = new ArrayList<>();
 
         shipObject = new ShipObject(
             GameSettings.SCREEN_WIDTH / 2, 150,
@@ -29,10 +46,42 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
+    public void show() {
+        gameSession.startGame();
+    }
+
+    @Override
     public void render(float delta) {
 
         myGdxGame.stepWorld();
         handleInput();
+
+        if (gameSession.shouldSpawnTrash()) {
+            TrashObject trashObject = new TrashObject(
+                GameSettings.TRASH_WIDTH, GameSettings.TRASH_HEIGHT,
+                GameResources.TRASH_IMG_PATH,
+                myGdxGame.world
+            );
+            trashArray.add(trashObject);
+        }
+
+        if (shipObject.needToShoot()) {
+            BulletObject laserBullet = new BulletObject(
+                shipObject.getX(), shipObject.getY() + shipObject.height / 2,
+                GameSettings.BULLET_WIDTH, GameSettings.BULLET_HEIGHT,
+                GameResources.BULLET_IMG_PATH,
+                myGdxGame.world
+            );
+            bulletArray.add(laserBullet);
+        }
+
+        if (!shipObject.isAlive()) {
+            System.out.println("Game over!");
+        }
+
+        updateTrash();
+        updateBullets();
+
         draw();
     }
 
@@ -50,7 +99,28 @@ public class GameScreen extends ScreenAdapter {
         ScreenUtils.clear(Color.CLEAR);
 
         myGdxGame.batch.begin();
+        for (TrashObject trash : trashArray) trash.draw(myGdxGame.batch);
         shipObject.draw(myGdxGame.batch);
+        for (BulletObject bullet : bulletArray) bullet.draw(myGdxGame.batch);
         myGdxGame.batch.end();
+
+    }
+
+    private void updateTrash() {
+        for (int i = 0; i < trashArray.size(); i++) {
+            if (!trashArray.get(i).isInFrame() || !trashArray.get(i).isAlive()) {
+                myGdxGame.world.destroyBody(trashArray.get(i).body);
+                trashArray.remove(i--);
+            }
+        }
+    }
+
+    private void updateBullets() {
+        for (int i = 0; i < bulletArray.size(); i++) {
+            if (bulletArray.get(i).hasToBeDestroyed()) {
+                myGdxGame.world.destroyBody(bulletArray.get(i).body);
+                bulletArray.remove(i--);
+            }
+        }
     }
 }
