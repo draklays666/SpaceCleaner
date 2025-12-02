@@ -8,6 +8,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
 
+import io.github.some_example_name.Components.ButtonView;
+import io.github.some_example_name.Components.ImageView;
+import io.github.some_example_name.Components.LiveView;
+import io.github.some_example_name.Components.MovingBackgroundView;
+import io.github.some_example_name.Components.TextView;
 import io.github.some_example_name.ContactManager;
 import io.github.some_example_name.GameResources;
 import io.github.some_example_name.GameSession;
@@ -28,6 +33,12 @@ public class GameScreen extends ScreenAdapter {
 
     ContactManager contactManager;
 
+    MovingBackgroundView backgroundView;
+    ImageView topBlackoutView;
+    LiveView liveView;
+    TextView scoreTextView;
+    ButtonView pauseButton;
+
     public GameScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
         gameSession = new GameSession();
@@ -43,6 +54,12 @@ public class GameScreen extends ScreenAdapter {
             GameResources.SHIP_IMG_PATH,
             myGdxGame.world
         );
+
+        backgroundView = new MovingBackgroundView(GameResources.BACKGROUND_IMG_PATH);
+        topBlackoutView = new ImageView(0, 1180, GameResources.BLACKOUT_TOP_IMG_PATH);
+        liveView = new LiveView(305, 1215);
+        scoreTextView = new TextView(myGdxGame.commonWhiteFont, 50, 1215);
+        pauseButton = new ButtonView(605, 1200, 46, 54, GameResources.PAUSE_IMG_PATH);
     }
 
     @Override
@@ -81,6 +98,9 @@ public class GameScreen extends ScreenAdapter {
 
         updateTrash();
         updateBullets();
+        backgroundView.move();
+        scoreTextView.setText("Score: " + 100);
+        liveView.setLeftLives(shipObject.getLiveLeft());
 
         draw();
     }
@@ -99,11 +119,15 @@ public class GameScreen extends ScreenAdapter {
         ScreenUtils.clear(Color.CLEAR);
 
         myGdxGame.batch.begin();
+        backgroundView.draw(myGdxGame.batch);
         for (TrashObject trash : trashArray) trash.draw(myGdxGame.batch);
         shipObject.draw(myGdxGame.batch);
         for (BulletObject bullet : bulletArray) bullet.draw(myGdxGame.batch);
+        topBlackoutView.draw(myGdxGame.batch);
+        scoreTextView.draw(myGdxGame.batch);
+        liveView.draw(myGdxGame.batch);
+        pauseButton.draw(myGdxGame.batch);
         myGdxGame.batch.end();
-
     }
 
     private void updateTrash() {
