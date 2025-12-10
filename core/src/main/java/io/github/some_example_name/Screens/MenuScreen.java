@@ -27,7 +27,8 @@ public class MenuScreen extends ScreenAdapter {
 
         backgroundView = new MovingBackgroundView(GameResources.BACKGROUND_IMG_PATH);
         titleView = new TextView(myGdxGame.largeWhiteFont, 180, 960, "Space Cleaner");
-        startButtonView = new ButtonView(140, 646, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "start");
+
+        startButtonView = new ButtonView(140, 646, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "play");
         settingsButtonView = new ButtonView(140, 551, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "settings");
         exitButtonView = new ButtonView(140, 456, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "exit");
     }
