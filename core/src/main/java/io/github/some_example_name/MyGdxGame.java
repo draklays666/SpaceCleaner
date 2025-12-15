@@ -19,6 +19,7 @@ import io.github.some_example_name.Managers.AudioManager;
 import io.github.some_example_name.Screens.GameScreen;
 import io.github.some_example_name.Screens.MenuScreen;
 import io.github.some_example_name.Screens.SettingsScreen;
+import io.github.some_example_name.Screens.UpgradeScreen;
 
 public class MyGdxGame extends Game {
 
@@ -36,6 +37,7 @@ public class MyGdxGame extends Game {
     public GameScreen gameScreen;
     public MenuScreen menuScreen;
     public SettingsScreen settingsScreen;
+    public UpgradeScreen upgradeScreen;
 
     float accumulator = 0;
 
@@ -57,6 +59,7 @@ public class MyGdxGame extends Game {
         gameScreen = new GameScreen(this);
         menuScreen = new MenuScreen(this);
         settingsScreen = new SettingsScreen(this);
+        upgradeScreen = new UpgradeScreen(this);
 
         setScreen(menuScreen);
     }

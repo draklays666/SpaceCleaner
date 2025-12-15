@@ -175,6 +175,7 @@ public class GameScreen extends ScreenAdapter {
                         gameSession.resumeGame();
                     }
                     if (homeButton.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                        MemoryManager.saveTotalScore(gameSession.getScore());
                         myGdxGame.setScreen(myGdxGame.menuScreen);
                     }
                     break;

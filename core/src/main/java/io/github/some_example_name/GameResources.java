@@ -5,6 +5,14 @@ public class GameResources {
     // Images for textures
 
     public static final String BACKGROUND_IMG_PATH = "textures/background.png";
+    public static final String PLUS_IMG_PATH = "textures/plus.png";
+    public static final String DAMAGE_BAR_IMG_PATH = "textures/red.png";
+    public static final String RATE_BAR_IMG_PATH = "textures/orange.png";
+    public static final String HP_BAR_IMG_PATH = "textures/pink.png";
+    public static final String UPGRADES_BAR_IMG_PATH = "textures/upgrades_bar.png";
+    public static final String DAMAGE_IMG_PATH = "textures/damage_icon.png";
+    public static final String RATE_IMG_PATH = "textures/rate_icon.png";
+    public static final String HP_IMG_PATH = "textures/life.png";
 
     public static final String BLACKOUT_FULL_IMG_PATH = "textures/blackout_full.png";
     public static final String BLACKOUT_TOP_IMG_PATH = "textures/blackout_top.png";

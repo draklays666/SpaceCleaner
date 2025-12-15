@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.util.ArrayList;
 
 import io.github.some_example_name.Managers.MemoryManager;
-
 public class GameSession {
 
     public GameState state;
@@ -19,6 +18,7 @@ public class GameSession {
     }
 
     public void startGame() {
+        int extraLives = MemoryManager.loadExtraLives();
         state = GameState.PLAYING;
         score = 0;
         destructedTrashNumber = 0;
@@ -49,6 +49,7 @@ public class GameSession {
             if (recordsTable.get(foundIdx) < getScore()) break;
         }
         recordsTable.add(foundIdx, getScore());
+        MemoryManager.saveTotalScore(score);
         MemoryManager.saveTableOfRecords(recordsTable);
     }
 
