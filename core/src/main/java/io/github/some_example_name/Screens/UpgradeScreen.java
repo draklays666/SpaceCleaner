@@ -29,8 +29,8 @@ public class UpgradeScreen extends ScreenAdapter {
     ImageView upgrades_icon2;
     ImageView upgrades_icon3;
     TextView titleTextView;
-    TextView scoreUpgrades;
     ButtonView returnButton;
+    TextView scoreUpgrades;
 
     MovingBackgroundView backgroundView;
     public UpgradeScreen(MyGdxGame myGdxGame) {
@@ -50,7 +50,7 @@ public class UpgradeScreen extends ScreenAdapter {
 
 
 
-        //scoreUpgrades = new TextView(myGdxGame.commonWhiteFont, 360, 870, "Score: " + MemoryManager.getTotalScore());
+        scoreUpgrades = new TextView(myGdxGame.commonWhiteFont, 360, 870, "Score: " + MemoryManager.getTotalScore());
 
 
         blackoutImageView = new ImageView(85, 365, GameResources.BLACKOUT_MIDDLE_IMG_PATH);
@@ -88,7 +88,7 @@ public class UpgradeScreen extends ScreenAdapter {
         upgrades_icon1.draw(myGdxGame.batch);
         upgrades_icon2.draw(myGdxGame.batch);
         upgrades_icon3.draw(myGdxGame.batch);
-        //scoreUpgrades.draw(myGdxGame.batch);
+        scoreUpgrades.draw(myGdxGame.batch);
 
         myGdxGame.batch.end();
     }

@@ -45,5 +45,12 @@ public class MemoryManager {
         ArrayList<Integer> table = json.fromJson(ArrayList.class, scores);
         return table;
     }
+    public static int getTotalScore() {
+        return preferences.getInteger("upgrade_total_score", 0);
+    }
+    public static void upgradeTotalScore(int totalScore) {
+        preferences.putInteger("upgrade_total_score", getTotalScore() + totalScore);
+        preferences.flush();
+    }
 
 }
