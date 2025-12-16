@@ -19,12 +19,15 @@ public class UpgradeScreen extends ScreenAdapter {
     MyGdxGame myGdxGame;
 
     ImageView blackoutImageView;
-    ButtonView plusImageView;
+    ButtonView plusImageView1;
     ButtonView plusImageView2;
     ButtonView plusImageView3;
     ImageView upgrades_bar1;
     ImageView upgrades_bar2;
     ImageView upgrades_bar3;
+    ImageView upgrades_icon1;
+    ImageView upgrades_icon2;
+    ImageView upgrades_icon3;
     TextView titleTextView;
     TextView scoreUpgrades;
     ButtonView returnButton;
@@ -35,13 +38,19 @@ public class UpgradeScreen extends ScreenAdapter {
 
         titleTextView = new TextView(myGdxGame.largeWhiteFont, 256, 956, "Upgrades");
         backgroundView = new MovingBackgroundView(GameResources.BACKGROUND_IMG_PATH);
-        plusImageView = new ButtonView(525, 695, 70, 70, GameResources.PLUS_IMG_PATH);
+        plusImageView1 = new ButtonView(525, 695, 70, 70, GameResources.PLUS_IMG_PATH);
         plusImageView2 = new ButtonView(525,595,70, 70,  GameResources.PLUS_IMG_PATH);
         plusImageView3 = new ButtonView(525,495,70, 70, GameResources.PLUS_IMG_PATH);
         upgrades_bar1 = new ImageView(150, 680,GameResources.UPGRADES_BAR_IMG_PATH);
         upgrades_bar2 = new ImageView(150, 580,GameResources.UPGRADES_BAR_IMG_PATH);
         upgrades_bar3 = new ImageView(150, 480,GameResources.UPGRADES_BAR_IMG_PATH);
-        scoreUpgrades = new TextView(myGdxGame.commonWhiteFont, 360, 870, "Score: " + MemoryManager.getTotalScore());
+        upgrades_icon1 = new ImageView(159,690, GameResources.DAMAGE_IMG_PATH);
+        upgrades_icon2 = new ImageView(153,585, GameResources.RATE_IMG_PATH);
+        upgrades_icon3 = new ImageView(173,505, GameResources.LIVE_IMG_PATH);
+
+
+
+        //scoreUpgrades = new TextView(myGdxGame.commonWhiteFont, 360, 870, "Score: " + MemoryManager.getTotalScore());
 
 
         blackoutImageView = new ImageView(85, 365, GameResources.BLACKOUT_MIDDLE_IMG_PATH);
@@ -70,13 +79,16 @@ public class UpgradeScreen extends ScreenAdapter {
         blackoutImageView.draw(myGdxGame.batch);
         titleTextView.draw(myGdxGame.batch);
         returnButton.draw(myGdxGame.batch);
-        plusImageView.draw(myGdxGame.batch);
+        plusImageView1.draw(myGdxGame.batch);
         plusImageView2.draw(myGdxGame.batch);
         plusImageView3.draw(myGdxGame.batch);
         upgrades_bar1.draw(myGdxGame.batch);
         upgrades_bar2.draw(myGdxGame.batch);
         upgrades_bar3.draw(myGdxGame.batch);
-        scoreUpgrades.draw(myGdxGame.batch);
+        upgrades_icon1.draw(myGdxGame.batch);
+        upgrades_icon2.draw(myGdxGame.batch);
+        upgrades_icon3.draw(myGdxGame.batch);
+        //scoreUpgrades.draw(myGdxGame.batch);
 
         myGdxGame.batch.end();
     }

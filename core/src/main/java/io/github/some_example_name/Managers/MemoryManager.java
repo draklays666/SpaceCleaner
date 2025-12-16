@@ -45,20 +45,5 @@ public class MemoryManager {
         ArrayList<Integer> table = json.fromJson(ArrayList.class, scores);
         return table;
     }
-    public static void saveExtraLives(int extraLives) {
-        preferences.putInteger("extraLives", extraLives);
-        preferences.flush();
-    }
-
-    public static int loadExtraLives() {
-        return preferences.getInteger("extraLives", 1);
-    }
-    public static int getTotalScore() {
-        return preferences.getInteger("total_score", 0);
-    }
-    public static void saveTotalScore(int totalScore) {
-        preferences.putInteger("total_score", getTotalScore() + totalScore);
-        preferences.flush();
-    }
 
 }
