@@ -53,7 +53,7 @@ public class UpgradeScreen extends ScreenAdapter {
         upgrades_icon2 = new ImageView(153,585, GameResources.RATE_IMG_PATH);
         upgrades_icon3 = new ImageView(173,505, GameResources.LIVE_IMG_PATH);
         damageUpgrades = new UpgradesView(145, 705, MemoryManager.saveDamageLevel(), GameResources.DAMAGE_BAR_IMG_PATH);
-        rateUpgrades = new UpgradesView(145, 603, MemoryManager.saveRateLevel(), GameResources.RATE_BAR_IMG_PATH);
+        rateUpgrades = new UpgradesView(150, 603, MemoryManager.saveRateLevel(), GameResources.RATE_BAR_IMG_PATH);
         healthUpgrades = new UpgradesView(145, 505, MemoryManager.saveHealthLevel(), GameResources.HP_BAR_IMG_PATH);
 
 
@@ -76,7 +76,6 @@ public class UpgradeScreen extends ScreenAdapter {
     public void render(float delta) {
 
         handleInput();
-
         scoreUpgrades.setText("Score: " + MemoryManager.getTotalScore());
 
         myGdxGame.camera.update();
@@ -115,22 +114,21 @@ public class UpgradeScreen extends ScreenAdapter {
             }
             if (plusImageView1.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
                 if (canBuyDamageUpgrade()) {
-                    MemoryManager.buyTotalScore(GameSettings.UPGRADES_COST_UP * damageUpgrades.getUpgradeLevel());
+                    MemoryManager.buyTotalScore(GameSettings.UPGRADES_COST_UP * (damageUpgrades.getUpgradeLevel() + 1));
                     MemoryManager.loadDamageLevel();
                     damageUpgrades.upgradeLevelUp();
-
                 }
             }
             if (plusImageView2.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
                 if (canBuyRateUpgrade()) {
-                    MemoryManager.buyTotalScore(GameSettings.UPGRADES_COST_UP * rateUpgrades.getUpgradeLevel());
+                    MemoryManager.buyTotalScore(GameSettings.UPGRADES_COST_UP * (rateUpgrades.getUpgradeLevel() + 1));
                     MemoryManager.loadRateLevel();
                     rateUpgrades.upgradeLevelUp();
                 }
             }
             if (plusImageView3.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
                 if (canBuyHealthUpgrade()) {
-                    MemoryManager.buyTotalScore(GameSettings.UPGRADES_COST_UP * healthUpgrades.getUpgradeLevel());
+                    MemoryManager.buyTotalScore(GameSettings.UPGRADES_COST_UP * (healthUpgrades.getUpgradeLevel() + 1));
                     MemoryManager.loadHealthLevel();
                     healthUpgrades.upgradeLevelUp();
                 }
@@ -138,21 +136,15 @@ public class UpgradeScreen extends ScreenAdapter {
         }
     }
     private boolean canBuyHealthUpgrade() {
-        int currentLevel = MemoryManager.saveHealthLevel();
-        int cost = GameSettings.UPGRADES_COST_UP * (currentLevel + 1);
-        return currentLevel < 5 && MemoryManager.getTotalScore() >= cost;
+        return MemoryManager.saveHealthLevel() < 4 && MemoryManager.getTotalScore() >= GameSettings.UPGRADES_COST_UP * (MemoryManager.saveHealthLevel() + 1);
     }
 
     private boolean canBuyDamageUpgrade() {
-        int currentLevel = MemoryManager.saveDamageLevel();
-        int cost = GameSettings.UPGRADES_COST_UP * (currentLevel + 1);
-        return currentLevel < 5 && MemoryManager.getTotalScore() >= cost;
+        return MemoryManager.saveDamageLevel() < 4 && MemoryManager.getTotalScore() >= GameSettings.UPGRADES_COST_UP * (MemoryManager.saveDamageLevel() + 1);
     }
 
     private boolean canBuyRateUpgrade() {
-        int currentLevel = MemoryManager.saveRateLevel();
-        int cost = GameSettings.UPGRADES_COST_UP * (currentLevel + 1);
-        return currentLevel < 5 && MemoryManager.getTotalScore() >= cost;
+        return MemoryManager.saveRateLevel() < 4 && MemoryManager.getTotalScore() >= GameSettings.UPGRADES_COST_UP * (MemoryManager.saveRateLevel() + 1);
     }
     @Override
     public void dispose() {

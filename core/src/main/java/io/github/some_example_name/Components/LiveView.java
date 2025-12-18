@@ -12,6 +12,7 @@ public class LiveView extends View {
     private Texture texture;
 
     private int leftLives;
+    int maxLives = 6;
 
     public LiveView(float x, float y) {
         super(x, y);
@@ -27,9 +28,13 @@ public class LiveView extends View {
 
     @Override
     public void draw(SpriteBatch batch) {
-        if (leftLives > 0) batch.draw(texture, x + (texture.getWidth() + livePadding), y, width, height);
-        if (leftLives > 1) batch.draw(texture, x, y, width, height);
-        if (leftLives > 2) batch.draw(texture, x + 2 * (texture.getWidth() + livePadding), y, width, height);
+        float currentX = x;
+        int maxLivesToShow = 5;
+
+        for (int i = 0; i < Math.min(leftLives, maxLivesToShow); i++) {
+            batch.draw(texture, currentX, y, width, height);
+            currentX += (width + 5);
+        }
     }
 
     @Override

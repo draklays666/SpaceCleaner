@@ -72,7 +72,7 @@ public class GameScreen extends ScreenAdapter {
 
         backgroundView = new MovingBackgroundView(GameResources.BACKGROUND_IMG_PATH);
         topBlackoutView = new ImageView(0, 1180, GameResources.BLACKOUT_TOP_IMG_PATH);
-        liveView = new LiveView(305, 1215);
+        liveView = new LiveView(280, 1215);
         scoreTextView = new TextView(myGdxGame.commonWhiteFont, 50, 1215);
         pauseButton = new ButtonView(
             605, 1200,

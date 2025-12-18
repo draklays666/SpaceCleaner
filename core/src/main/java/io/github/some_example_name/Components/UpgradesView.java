@@ -32,11 +32,11 @@ public class UpgradesView extends View {
 
     @Override
     public void draw(SpriteBatch batch) {
-        if (upgradeLevel >= 1) batch.draw(textureBar, x + GameSettings.X_BAR, y, widthBar, heightBar);
-        if (upgradeLevel >= 2) batch.draw(textureBar, x + GameSettings.X_BAR + widthBar, y, widthBar, heightBar);
-        if (upgradeLevel >= 3) batch.draw(textureBar, x + GameSettings.X_BAR + 2 * widthBar , y, widthBar, heightBar);
-        if (upgradeLevel >= 4) batch.draw(textureBar, x + GameSettings.X_BAR + 3 * widthBar, y, widthBar, heightBar);
-        if (upgradeLevel >= 5) batch.draw(textureBar, x + GameSettings.X_BAR + 4 * widthBar, y, widthBar, heightBar);
+        if (true) batch.draw(textureBar, x + GameSettings.X_BAR, y, widthBar, heightBar);
+        if (upgradeLevel >= 1) batch.draw(textureBar, x + GameSettings.X_BAR + widthBar, y, widthBar, heightBar);
+        if (upgradeLevel >= 2) batch.draw(textureBar, x + GameSettings.X_BAR + 2 * widthBar , y, widthBar, heightBar);
+        if (upgradeLevel >= 3) batch.draw(textureBar, x + GameSettings.X_BAR + 3 * widthBar, y, widthBar, heightBar);
+        if (upgradeLevel >= 4) batch.draw(textureBar, x + GameSettings.X_BAR + 4 * widthBar, y, widthBar, heightBar);
     }
 
     @Override
