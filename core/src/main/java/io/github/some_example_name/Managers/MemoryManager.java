@@ -45,12 +45,51 @@ public class MemoryManager {
         ArrayList<Integer> table = json.fromJson(ArrayList.class, scores);
         return table;
     }
+
     public static int getTotalScore() {
         return preferences.getInteger("upgrade_total_score", 0);
     }
+
     public static void upgradeTotalScore(int totalScore) {
         preferences.putInteger("upgrade_total_score", getTotalScore() + totalScore);
         preferences.flush();
     }
 
+    public static int saveDamageLevel() {
+        return preferences.getInteger("upgrade_damage", 1);
+    }
+
+    public static int saveRateLevel() {
+        return preferences.getInteger("upgrade_fire_rate", 1);
+    }
+
+    public static int saveHealthLevel() {
+        return preferences.getInteger("upgrade_health", 1);
+    }
+
+    public static void loadDamageLevel() {
+        preferences.putInteger("upgrade_damage", saveDamageLevel() + 1);
+        preferences.flush();
+    }
+
+    public static void loadRateLevel() {
+        preferences.putInteger("upgrade_fire_rate", saveRateLevel() + 1);
+        preferences.flush();
+    }
+
+    public static void loadHealthLevel() {
+        preferences.putInteger("upgrade_health", saveHealthLevel() + 1);
+        preferences.flush();
+
+    }
+    public static void buyTotalScore(int totalScore) {
+        preferences.putInteger("upgrade_total_score", getTotalScore() - totalScore);
+        preferences.flush();
+    }
+    public static void resetToInitialLevels() {
+        preferences.putInteger("upgrade_damage", 0);
+        preferences.putInteger("upgrade_fire_rate", 0);
+        preferences.putInteger("upgrade_health", 0);
+        preferences.flush();
+    }
 }

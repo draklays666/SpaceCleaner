@@ -37,5 +37,7 @@ public class GameResources {
     // Fonts for text
 
     public static final String FONT_PATH = "fonts/Montserrat-Bold.ttf";
+    // Upgrades
+
 
 }

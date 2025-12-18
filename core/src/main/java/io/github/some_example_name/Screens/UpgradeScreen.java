@@ -11,7 +11,9 @@ import io.github.some_example_name.Components.ButtonView;
 import io.github.some_example_name.Components.ImageView;
 import io.github.some_example_name.Components.MovingBackgroundView;
 import io.github.some_example_name.Components.TextView;
+import io.github.some_example_name.Components.UpgradesView;
 import io.github.some_example_name.GameResources;
+import io.github.some_example_name.GameSettings;
 import io.github.some_example_name.Managers.MemoryManager;
 import io.github.some_example_name.MyGdxGame;
 
@@ -31,6 +33,9 @@ public class UpgradeScreen extends ScreenAdapter {
     TextView titleTextView;
     ButtonView returnButton;
     TextView scoreUpgrades;
+    UpgradesView healthUpgrades;
+    UpgradesView damageUpgrades;
+    UpgradesView rateUpgrades;
 
     MovingBackgroundView backgroundView;
     public UpgradeScreen(MyGdxGame myGdxGame) {
@@ -47,6 +52,9 @@ public class UpgradeScreen extends ScreenAdapter {
         upgrades_icon1 = new ImageView(159,690, GameResources.DAMAGE_IMG_PATH);
         upgrades_icon2 = new ImageView(153,585, GameResources.RATE_IMG_PATH);
         upgrades_icon3 = new ImageView(173,505, GameResources.LIVE_IMG_PATH);
+        damageUpgrades = new UpgradesView(145, 705, MemoryManager.saveDamageLevel(), GameResources.DAMAGE_BAR_IMG_PATH);
+        rateUpgrades = new UpgradesView(145, 603, MemoryManager.saveRateLevel(), GameResources.RATE_BAR_IMG_PATH);
+        healthUpgrades = new UpgradesView(145, 505, MemoryManager.saveHealthLevel(), GameResources.HP_BAR_IMG_PATH);
 
 
 
@@ -69,6 +77,8 @@ public class UpgradeScreen extends ScreenAdapter {
 
         handleInput();
 
+        scoreUpgrades.setText("Score: " + MemoryManager.getTotalScore());
+
         myGdxGame.camera.update();
         myGdxGame.batch.setProjectionMatrix(myGdxGame.camera.combined);
         ScreenUtils.clear(Color.CLEAR);
@@ -85,6 +95,9 @@ public class UpgradeScreen extends ScreenAdapter {
         upgrades_bar1.draw(myGdxGame.batch);
         upgrades_bar2.draw(myGdxGame.batch);
         upgrades_bar3.draw(myGdxGame.batch);
+        healthUpgrades.draw(myGdxGame.batch);
+        damageUpgrades.draw(myGdxGame.batch);
+        rateUpgrades.draw(myGdxGame.batch);
         upgrades_icon1.draw(myGdxGame.batch);
         upgrades_icon2.draw(myGdxGame.batch);
         upgrades_icon3.draw(myGdxGame.batch);
@@ -100,7 +113,59 @@ public class UpgradeScreen extends ScreenAdapter {
             if (returnButton.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
                 myGdxGame.setScreen(myGdxGame.menuScreen);
             }
+            if (plusImageView1.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                if (canBuyDamageUpgrade()) {
+                    MemoryManager.buyTotalScore(GameSettings.UPGRADES_COST_UP * damageUpgrades.getUpgradeLevel());
+                    MemoryManager.loadDamageLevel();
+                    damageUpgrades.upgradeLevelUp();
+
+                }
+            }
+            if (plusImageView2.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                if (canBuyRateUpgrade()) {
+                    MemoryManager.buyTotalScore(GameSettings.UPGRADES_COST_UP * rateUpgrades.getUpgradeLevel());
+                    MemoryManager.loadRateLevel();
+                    rateUpgrades.upgradeLevelUp();
+                }
+            }
+            if (plusImageView3.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                if (canBuyHealthUpgrade()) {
+                    MemoryManager.buyTotalScore(GameSettings.UPGRADES_COST_UP * healthUpgrades.getUpgradeLevel());
+                    MemoryManager.loadHealthLevel();
+                    healthUpgrades.upgradeLevelUp();
+                }
+            }
         }
+    }
+    private boolean canBuyHealthUpgrade() {
+        int currentLevel = MemoryManager.saveHealthLevel();
+        int cost = GameSettings.UPGRADES_COST_UP * (currentLevel + 1);
+        return currentLevel < 5 && MemoryManager.getTotalScore() >= cost;
+    }
+
+    private boolean canBuyDamageUpgrade() {
+        int currentLevel = MemoryManager.saveDamageLevel();
+        int cost = GameSettings.UPGRADES_COST_UP * (currentLevel + 1);
+        return currentLevel < 5 && MemoryManager.getTotalScore() >= cost;
+    }
+
+    private boolean canBuyRateUpgrade() {
+        int currentLevel = MemoryManager.saveRateLevel();
+        int cost = GameSettings.UPGRADES_COST_UP * (currentLevel + 1);
+        return currentLevel < 5 && MemoryManager.getTotalScore() >= cost;
+    }
+    @Override
+    public void dispose() {
+        backgroundView.dispose();
+        blackoutImageView.dispose();
+        healthUpgrades.dispose();
+        damageUpgrades.dispose();
+        rateUpgrades.dispose();
+        returnButton.dispose();
+        plusImageView1.dispose();
+        plusImageView2.dispose();
+        plusImageView3.dispose();
+        scoreUpgrades.dispose();
     }
 }
 

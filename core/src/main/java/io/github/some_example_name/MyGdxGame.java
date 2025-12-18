@@ -6,6 +6,7 @@ import static io.github.some_example_name.GameSettings.VELOCITY_ITERATIONS;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 
 import io.github.some_example_name.Managers.AudioManager;
+import io.github.some_example_name.Managers.MemoryManager;
 import io.github.some_example_name.Screens.GameScreen;
 import io.github.some_example_name.Screens.MenuScreen;
 import io.github.some_example_name.Screens.SettingsScreen;
@@ -47,6 +49,10 @@ public class MyGdxGame extends Game {
         Box2D.init();
         world = new World(new Vector2(0, 0), true);
 
+        if (isFirstLaunch()) {
+            MemoryManager.resetToInitialLevels();
+        }
+
         largeWhiteFont = FontBuilder.generate(48, Color.WHITE, GameResources.FONT_PATH);
         commonWhiteFont = FontBuilder.generate(24, Color.WHITE, GameResources.FONT_PATH);
         commonBlackFont = FontBuilder.generate(24, Color.BLACK, GameResources.FONT_PATH);
@@ -67,6 +73,10 @@ public class MyGdxGame extends Game {
     @Override
     public void dispose() {
         batch.dispose();
+    }
+    private boolean isFirstLaunch() {
+        Preferences prefs = Gdx.app.getPreferences("game_data");
+        return !prefs.contains("game_initialized"); // Проверка первого запуска
     }
 
     public void stepWorld() {
