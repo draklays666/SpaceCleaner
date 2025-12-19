@@ -52,13 +52,13 @@ public class UpgradeScreen extends ScreenAdapter {
         upgrades_icon1 = new ImageView(159,690, GameResources.DAMAGE_IMG_PATH);
         upgrades_icon2 = new ImageView(153,585, GameResources.RATE_IMG_PATH);
         upgrades_icon3 = new ImageView(173,505, GameResources.LIVE_IMG_PATH);
-        damageUpgrades = new UpgradesView(145, 705, MemoryManager.saveDamageLevel(), GameResources.DAMAGE_BAR_IMG_PATH);
-        rateUpgrades = new UpgradesView(150, 603, MemoryManager.saveRateLevel(), GameResources.RATE_BAR_IMG_PATH);
-        healthUpgrades = new UpgradesView(145, 505, MemoryManager.saveHealthLevel(), GameResources.HP_BAR_IMG_PATH);
+        damageUpgrades = new UpgradesView(146, 705, MemoryManager.getDamageLevel(), GameResources.DAMAGE_BAR_IMG_PATH);
+        rateUpgrades = new UpgradesView(149, 605, MemoryManager.getRateLevel(), GameResources.RATE_BAR_IMG_PATH);
+        healthUpgrades = new UpgradesView(146, 505, MemoryManager.saveHealthLevel(), GameResources.HP_BAR_IMG_PATH);
 
 
 
-        scoreUpgrades = new TextView(myGdxGame.commonWhiteFont, 360, 870, "Score: " + MemoryManager.getTotalScore());
+        scoreUpgrades = new TextView(myGdxGame.commonWhiteFont, 280, 790, "Score: " + MemoryManager.getTotalScore());
 
 
         blackoutImageView = new ImageView(85, 365, GameResources.BLACKOUT_MIDDLE_IMG_PATH);
@@ -140,11 +140,11 @@ public class UpgradeScreen extends ScreenAdapter {
     }
 
     private boolean canBuyDamageUpgrade() {
-        return MemoryManager.saveDamageLevel() < 4 && MemoryManager.getTotalScore() >= GameSettings.UPGRADES_COST_UP * (MemoryManager.saveDamageLevel() + 1);
+        return MemoryManager.getDamageLevel() < 4 && MemoryManager.getTotalScore() >= GameSettings.UPGRADES_COST_UP * (MemoryManager.getDamageLevel() + 1);
     }
 
     private boolean canBuyRateUpgrade() {
-        return MemoryManager.saveRateLevel() < 4 && MemoryManager.getTotalScore() >= GameSettings.UPGRADES_COST_UP * (MemoryManager.saveRateLevel() + 1);
+        return MemoryManager.getRateLevel() < 4 && MemoryManager.getTotalScore() >= GameSettings.UPGRADES_COST_UP * (MemoryManager.getRateLevel() + 1);
     }
     @Override
     public void dispose() {

@@ -55,11 +55,11 @@ public class MemoryManager {
         preferences.flush();
     }
 
-    public static int saveDamageLevel() {
+    public static int getDamageLevel() {
         return preferences.getInteger("upgrade_damage", 1);
     }
 
-    public static int saveRateLevel() {
+    public static int getRateLevel() {
         return preferences.getInteger("upgrade_fire_rate", 1);
     }
 
@@ -68,12 +68,12 @@ public class MemoryManager {
     }
 
     public static void loadDamageLevel() {
-        preferences.putInteger("upgrade_damage", saveDamageLevel() + 1);
+        preferences.putInteger("upgrade_damage", getDamageLevel() + 1);
         preferences.flush();
     }
 
     public static void loadRateLevel() {
-        preferences.putInteger("upgrade_fire_rate", saveRateLevel() + 1);
+        preferences.putInteger("upgrade_fire_rate", getRateLevel() + 1);
         preferences.flush();
     }
 
@@ -84,12 +84,6 @@ public class MemoryManager {
     }
     public static void buyTotalScore(int totalScore) {
         preferences.putInteger("upgrade_total_score", getTotalScore() - totalScore);
-        preferences.flush();
-    }
-    public static void resetToInitialLevels() {
-        preferences.putInteger("upgrade_damage", 0);
-        preferences.putInteger("upgrade_fire_rate", 0);
-        preferences.putInteger("upgrade_health", 0);
         preferences.flush();
     }
 }

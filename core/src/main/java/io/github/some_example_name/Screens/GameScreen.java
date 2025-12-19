@@ -22,6 +22,7 @@ import io.github.some_example_name.GameState;
 import io.github.some_example_name.Managers.MemoryManager;
 import io.github.some_example_name.MyGdxGame;
 import io.github.some_example_name.Objects.BulletObject;
+import io.github.some_example_name.Objects.HunterTrashObject;
 import io.github.some_example_name.Objects.ShipObject;
 import io.github.some_example_name.Objects.TrashObject;
 
@@ -33,8 +34,11 @@ public class GameScreen extends ScreenAdapter {
 
     ArrayList<TrashObject> trashArray;
     ArrayList<BulletObject> bulletArray;
+    ArrayList<HunterTrashObject> hunterTrashArray;
 
     ContactManager contactManager;
+    Object bullet;
+
 
     // PLAY state UI
     MovingBackgroundView backgroundView;
@@ -53,6 +57,7 @@ public class GameScreen extends ScreenAdapter {
     TextView recordsTextView;
     RecordsListView recordsListView;
     ButtonView homeButton2;
+    public boolean shouldPlayExplosion = false;
 
     public GameScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
@@ -62,6 +67,7 @@ public class GameScreen extends ScreenAdapter {
 
         trashArray = new ArrayList<>();
         bulletArray = new ArrayList<>();
+        hunterTrashArray = new ArrayList<>();
 
         shipObject = new ShipObject(
             GameSettings.SCREEN_WIDTH / 2, 150,
@@ -128,6 +134,14 @@ public class GameScreen extends ScreenAdapter {
                 );
                 trashArray.add(trashObject);
             }
+            if (gameSession.shouldSpawnHunterTrash()) {
+                HunterTrashObject hunterTrashObject = new HunterTrashObject(
+                    GameSettings.TRASH_WIDTH, GameSettings.TRASH_HEIGHT,
+                    GameResources.HUNTER_TRASH_IMG_PATH,
+                    myGdxGame.world
+                );
+                hunterTrashArray.add(hunterTrashObject);
+            }
 
             if (shipObject.needToShoot()) {
                 BulletObject laserBullet = new BulletObject(
@@ -145,8 +159,16 @@ public class GameScreen extends ScreenAdapter {
                 recordsListView.setRecords(MemoryManager.loadRecordsTable());
             }
 
+            if (shouldPlayExplosion) {
+                shouldPlayExplosion = false;
+                if (myGdxGame.audioManager.isSoundOn) {
+                    myGdxGame.audioManager.explosionSound.play(0.4f);
+                }
+            }
+
             updateTrash();
             updateBullets();
+            updateHunterTrash();
             backgroundView.move();
             gameSession.updateScore();
             scoreTextView.setText("Score: " + gameSession.getScore());
@@ -200,6 +222,7 @@ public class GameScreen extends ScreenAdapter {
         myGdxGame.batch.begin();
         backgroundView.draw(myGdxGame.batch);
         for (TrashObject trash : trashArray) trash.draw(myGdxGame.batch);
+        for (HunterTrashObject hunterTrash : hunterTrashArray) hunterTrash.draw(myGdxGame.batch);
         shipObject.draw(myGdxGame.batch);
         for (BulletObject bullet : bulletArray) bullet.draw(myGdxGame.batch);
         topBlackoutView.draw(myGdxGame.batch);
@@ -239,6 +262,22 @@ public class GameScreen extends ScreenAdapter {
             }
         }
     }
+    private void updateHunterTrash() {
+        for (int i = 0; i < hunterTrashArray.size(); i++) {
+
+            boolean hasToBeDestroyed = !hunterTrashArray.get(i).isAlive() || !hunterTrashArray.get(i).isInFrame();
+
+            if (!hunterTrashArray.get(i).isAlive()) {
+                gameSession.destructionRegistration();
+                if (myGdxGame.audioManager.isSoundOn) myGdxGame.audioManager.explosionSound.play(0.2f);
+            }
+
+            if (hasToBeDestroyed) {
+                myGdxGame.world.destroyBody(hunterTrashArray.get(i).body);
+                hunterTrashArray.remove(i--);
+            }
+        }
+    }
 
     private void updateBullets() {
         for (int i = 0; i < bulletArray.size(); i++) {
@@ -254,6 +293,10 @@ public class GameScreen extends ScreenAdapter {
         for (int i = 0; i < trashArray.size(); i++) {
             myGdxGame.world.destroyBody(trashArray.get(i).body);
             trashArray.remove(i--);
+        }
+        for (int i = 0; i < hunterTrashArray.size(); i++) {
+            myGdxGame.world.destroyBody(hunterTrashArray.get(i).body);
+            hunterTrashArray.remove(i--);
         }
 
         if (shipObject != null) {

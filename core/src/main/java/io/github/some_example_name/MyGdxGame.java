@@ -49,10 +49,6 @@ public class MyGdxGame extends Game {
         Box2D.init();
         world = new World(new Vector2(0, 0), true);
 
-        if (isFirstLaunch()) {
-            MemoryManager.resetToInitialLevels();
-        }
-
         largeWhiteFont = FontBuilder.generate(48, Color.WHITE, GameResources.FONT_PATH);
         commonWhiteFont = FontBuilder.generate(24, Color.WHITE, GameResources.FONT_PATH);
         commonBlackFont = FontBuilder.generate(24, Color.BLACK, GameResources.FONT_PATH);
@@ -73,10 +69,6 @@ public class MyGdxGame extends Game {
     @Override
     public void dispose() {
         batch.dispose();
-    }
-    private boolean isFirstLaunch() {
-        Preferences prefs = Gdx.app.getPreferences("game_data");
-        return !prefs.contains("game_initialized"); // Проверка первого запуска
     }
 
     public void stepWorld() {

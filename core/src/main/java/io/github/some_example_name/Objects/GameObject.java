@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
+import java.awt.Rectangle;
+
 
 public class GameObject {
 
@@ -22,7 +24,7 @@ public class GameObject {
     public Body body;
     Texture texture;
 
-    GameObject(String texturePath, int x, int y, int width, int height, short cBits, World world) {
+    public GameObject(String texturePath, int x, int y, int width, int height, short cBits, World world) {
         this.width = width;
         this.height = height;
         this.cBits = cBits;
@@ -80,6 +82,9 @@ public class GameObject {
 
         body.setTransform(x * SCALE, y * SCALE, 0);
         return body;
+    }
+    public Rectangle getBoundingRect() {
+        return new Rectangle((int) (getX() - width / 2f), (int) (getY() - height / 2f), width, height);
     }
 
 }

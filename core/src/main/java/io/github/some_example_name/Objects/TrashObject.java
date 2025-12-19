@@ -8,14 +8,13 @@ import io.github.some_example_name.GameSettings;
 
 public class TrashObject extends GameObject {
 
-    private static final int paddingHorizontal = 30;
 
     private int livesLeft;
 
     public TrashObject(int width, int height, String texturePath, World world) {
         super(
             texturePath,
-            width / 2 + paddingHorizontal + (new Random()).nextInt((GameSettings.SCREEN_WIDTH - 2 * paddingHorizontal - width)),
+            width / 2 + GameSettings.PADDING_HORIZONTAL + (new Random()).nextInt((GameSettings.SCREEN_WIDTH - 2 * GameSettings.PADDING_HORIZONTAL - width)),
             GameSettings.SCREEN_HEIGHT + height / 2,
             width, height,
             GameSettings.TRASH_BIT,

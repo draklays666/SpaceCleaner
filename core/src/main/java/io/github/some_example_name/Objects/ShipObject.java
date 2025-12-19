@@ -55,7 +55,7 @@ public class ShipObject extends GameObject {
     }
 
     public boolean needToShoot() {
-        float currentInterval = baseShootInterval * (1f - 0.1f * MemoryManager.saveRateLevel());
+        float currentInterval = baseShootInterval * (1f - 0.1f * MemoryManager.getRateLevel());
 
         if (TimeUtils.timeSinceMillis((long)(lastShotTime)) >= currentInterval * 1000) {
             lastShotTime = TimeUtils.millis();

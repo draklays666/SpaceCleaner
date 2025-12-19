@@ -15,11 +15,9 @@ public class BulletObject extends GameObject {
         body.setBullet(true);
         wasHit = false;
     }
-
     public boolean hasToBeDestroyed() {
         return wasHit || (getY() - height / 2 > GameSettings.SCREEN_HEIGHT);
     }
-
     @Override
     public void hit() {
         wasHit = true;

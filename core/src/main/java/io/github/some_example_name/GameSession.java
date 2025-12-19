@@ -5,14 +5,18 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.util.ArrayList;
 
 import io.github.some_example_name.Managers.MemoryManager;
+import io.github.some_example_name.Objects.GameObject;
+
 public class GameSession {
 
     public GameState state;
     long nextTrashSpawnTime;
+    long nextHunterTrashSpawnTime;
     long sessionStartTime;
     long pauseStartTime;
     private int score;
     int destructedTrashNumber;
+    private long lastAnyTrashSpawn;
 
     public GameSession() {
     }
@@ -23,6 +27,8 @@ public class GameSession {
         destructedTrashNumber = 0;
         sessionStartTime = TimeUtils.millis();
         nextTrashSpawnTime = sessionStartTime + (long) (GameSettings.STARTING_TRASH_APPEARANCE_COOL_DOWN
+            * getTrashPeriodCoolDown());
+        nextHunterTrashSpawnTime = sessionStartTime + (long) (GameSettings.STARTING_HUNTER_TRASH_APPEARANCE_COOL_DOWN
             * getTrashPeriodCoolDown());
     }
 
@@ -65,14 +71,29 @@ public class GameSession {
     }
 
     public boolean shouldSpawnTrash() {
-        if (nextTrashSpawnTime <= TimeUtils.millis()) {
-            nextTrashSpawnTime = TimeUtils.millis() + (long) (GameSettings.STARTING_TRASH_APPEARANCE_COOL_DOWN
-                * getTrashPeriodCoolDown());
+        long now = TimeUtils.millis();
+        if (now - lastAnyTrashSpawn < GameSettings.MIN_SPAWN_GAP) return false;
+        if (nextTrashSpawnTime <= now) {
+            nextTrashSpawnTime = now + (long)(GameSettings.STARTING_TRASH_APPEARANCE_COOL_DOWN * getTrashPeriodCoolDown());
+            lastAnyTrashSpawn = now;
             return true;
         }
         return false;
     }
+    public boolean shouldSpawnHunterTrash() {
+        long now = TimeUtils.millis();
 
+        if (now - lastAnyTrashSpawn < GameSettings.MIN_SPAWN_GAP) {
+            return false;
+        }
+        if (now >= nextHunterTrashSpawnTime) {
+            lastAnyTrashSpawn = now;
+            nextHunterTrashSpawnTime = now + (long)(GameSettings.STARTING_HUNTER_TRASH_APPEARANCE_COOL_DOWN * getTrashPeriodCoolDown());
+            return true;
+        }
+
+        return false;
+    }
     private float getTrashPeriodCoolDown() {
         return (float) Math.exp(-0.001 * (TimeUtils.millis() - sessionStartTime + 1) / 1000);
     }
