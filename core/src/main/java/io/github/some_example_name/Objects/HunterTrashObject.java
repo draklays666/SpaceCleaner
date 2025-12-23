@@ -7,8 +7,8 @@ import io.github.some_example_name.GameSettings;
 import io.github.some_example_name.Managers.MemoryManager;
 
 public class HunterTrashObject extends GameObject {
-     private float minValue = -3f;
-    private float maxValue = 3f;
+     private float minValue = -5f;
+    private float maxValue = 5f;
     private int livesLeft;
      private int livesLeftH = 2;
     public HunterTrashObject(int width, int height, String texturePath, World world) {

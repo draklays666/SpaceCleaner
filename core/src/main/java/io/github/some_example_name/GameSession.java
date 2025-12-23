@@ -23,7 +23,7 @@ public class GameSession {
 
     public void startGame() {
         state = GameState.PLAYING;
-        score = 20000;
+        score = 0;
         destructedTrashNumber = 0;
         sessionStartTime = TimeUtils.millis();
         nextTrashSpawnTime = sessionStartTime + (long) (GameSettings.STARTING_TRASH_APPEARANCE_COOL_DOWN
@@ -71,10 +71,20 @@ public class GameSession {
     }
 
     public boolean shouldSpawnTrash() {
+        if (mode == GameMode.HUNTERS_ONLY) {
+            return false;
+        }
+
         long now = TimeUtils.millis();
         if (now - lastAnyTrashSpawn < GameSettings.MIN_SPAWN_GAP) return false;
-        if (nextTrashSpawnTime <= now) {
-            nextTrashSpawnTime = now + (long)(GameSettings.STARTING_TRASH_APPEARANCE_COOL_DOWN * getTrashPeriodCoolDown());
+
+        float coolDownMultiplier = 1f;
+        if (mode == GameMode.SURVIVAL) {
+            coolDownMultiplier = 0.5f;
+        }
+
+        if (now >= nextTrashSpawnTime) {
+            nextTrashSpawnTime = now + (long)(GameSettings.STARTING_TRASH_APPEARANCE_COOL_DOWN * getTrashPeriodCoolDown() * coolDownMultiplier);
             lastAnyTrashSpawn = now;
             return true;
         }
@@ -82,19 +92,36 @@ public class GameSession {
     }
     public boolean shouldSpawnHunterTrash() {
         long now = TimeUtils.millis();
+        if (now - lastAnyTrashSpawn < GameSettings.MIN_SPAWN_GAP) return false;
 
-        if (now - lastAnyTrashSpawn < GameSettings.MIN_SPAWN_GAP) {
-            return false;
+        float coolDownMultiplier = 1f;
+        if (mode == GameMode.HUNTERS_ONLY) {
+            coolDownMultiplier = 0.2f;
+        } else if (mode == GameMode.SURVIVAL) {
+            coolDownMultiplier = 0.5f;
         }
+
         if (now >= nextHunterTrashSpawnTime) {
+            nextHunterTrashSpawnTime = now + (long)(GameSettings.STARTING_HUNTER_TRASH_APPEARANCE_COOL_DOWN * getTrashPeriodCoolDown() * coolDownMultiplier);
             lastAnyTrashSpawn = now;
-            nextHunterTrashSpawnTime = now + (long)(GameSettings.STARTING_HUNTER_TRASH_APPEARANCE_COOL_DOWN * getTrashPeriodCoolDown());
             return true;
         }
-
         return false;
     }
     private float getTrashPeriodCoolDown() {
-        return (float) Math.exp(-0.001 * (TimeUtils.millis() - sessionStartTime + 1) / 1000);
+        float growthRate = getDifficultyGrowthRate();
+        return (float) Math.exp(-growthRate * (TimeUtils.millis() - sessionStartTime + 1) / 1000);
+    }
+
+    private GameMode mode = GameMode.NORMAL;
+    public void startGame(GameMode mode) {
+        this.mode = mode;
+        startGame();
+    }
+    private float getDifficultyGrowthRate() {
+        if (mode == GameMode.SURVIVAL) {
+            return 0.0025f;
+        }
+        return 0.001f;
     }
 }

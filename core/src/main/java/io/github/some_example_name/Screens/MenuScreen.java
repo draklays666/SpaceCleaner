@@ -7,9 +7,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.some_example_name.Components.ButtonView;
+import io.github.some_example_name.Components.ImageView;
 import io.github.some_example_name.Components.MovingBackgroundView;
 import io.github.some_example_name.Components.TextView;
+import io.github.some_example_name.GameMode;
 import io.github.some_example_name.GameResources;
+import io.github.some_example_name.GameSession;
+import io.github.some_example_name.GameSettings;
 import io.github.some_example_name.MyGdxGame;
 
 public class MenuScreen extends ScreenAdapter {
@@ -22,7 +26,8 @@ public class MenuScreen extends ScreenAdapter {
     ButtonView settingsButtonView;
     ButtonView exitButtonView;
     ButtonView upgradeButtonView;
-
+    ButtonView survivalButton;
+    ButtonView huntersButton;
 
     public MenuScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
@@ -30,11 +35,12 @@ public class MenuScreen extends ScreenAdapter {
         backgroundView = new MovingBackgroundView(GameResources.BACKGROUND_IMG_PATH);
         titleView = new TextView(myGdxGame.largeWhiteFont, 180, 960, "Space Cleaner");
 
-        startButtonView = new ButtonView(140, 646, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "play");
-        settingsButtonView = new ButtonView(140, 456, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "settings");
-        exitButtonView = new ButtonView(140, 361, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "exit");
-        upgradeButtonView = new ButtonView(140, 551, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "upgrade");
-    }
+        startButtonView = new ButtonView(140, 646, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "Play");
+        survivalButton = new ButtonView(140, 556, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "Survival");
+        huntersButton = new ButtonView(140, 466, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "Hunters Only");
+        settingsButtonView = new ButtonView(140, 286, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "Settings");
+        exitButtonView = new ButtonView(140, 196, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "Exit");
+        upgradeButtonView = new ButtonView(140, 376, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "Upgrade");}
 
     @Override
     public void render(float delta) {
@@ -49,6 +55,8 @@ public class MenuScreen extends ScreenAdapter {
 
         backgroundView.draw(myGdxGame.batch);
         titleView.draw(myGdxGame.batch);
+        survivalButton.draw(myGdxGame.batch);
+        huntersButton.draw(myGdxGame.batch);
         upgradeButtonView.draw(myGdxGame.batch);
         exitButtonView.draw(myGdxGame.batch);
         settingsButtonView.draw(myGdxGame.batch);
@@ -62,6 +70,16 @@ public class MenuScreen extends ScreenAdapter {
             myGdxGame.touch = myGdxGame.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
             if (startButtonView.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                myGdxGame.setScreen(myGdxGame.gameScreen);
+                myGdxGame.gameScreen.startNewGame(GameMode.NORMAL);
+            }
+            if (survivalButton.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                myGdxGame.gameScreen.startNewGame(GameMode.SURVIVAL);
+                myGdxGame.setScreen(myGdxGame.gameScreen);
+            }
+
+            if (huntersButton.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                myGdxGame.gameScreen.startNewGame(GameMode.HUNTERS_ONLY);
                 myGdxGame.setScreen(myGdxGame.gameScreen);
             }
             if (exitButtonView.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {

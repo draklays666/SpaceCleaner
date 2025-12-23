@@ -14,6 +14,7 @@ import io.github.some_example_name.Components.LiveView;
 import io.github.some_example_name.Components.MovingBackgroundView;
 import io.github.some_example_name.Components.RecordsListView;
 import io.github.some_example_name.Components.TextView;
+import io.github.some_example_name.GameMode;
 import io.github.some_example_name.Managers.ContactManager;
 import io.github.some_example_name.GameResources;
 import io.github.some_example_name.GameSession;
@@ -286,6 +287,10 @@ public class GameScreen extends ScreenAdapter {
                 bulletArray.remove(i--);
             }
         }
+    }
+    public void startNewGame(GameMode mode) {
+        restartGame();
+        gameSession.startGame(mode);
     }
 
     private void restartGame() {
